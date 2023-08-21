@@ -12,11 +12,13 @@ services:
       - DATABASE_PASSWORD=root
     depends_on:
       - postgres
+    expose:
+      - "8000"
     deploy:
       resources:
         limits:
           cpus: '0.3'
-          memory: '0.7GB'
+          memory: '0.6GB'
     networks:
       - app-network
 
@@ -30,11 +32,13 @@ services:
       - DATABASE_PASSWORD=root
     depends_on:
       - postgres
+    expose:
+      - "8000"
     deploy:
       resources:
         limits:
           cpus: '0.3'
-          memory: '0.7GB'
+          memory: '0.6GB'
     networks:
       - app-network
 
@@ -51,7 +55,7 @@ services:
       resources:
         limits:
           cpus: '0.1'
-          memory: '0.50GB'
+          memory: '0.3GB'
     networks:
       - app-network
 
@@ -76,7 +80,7 @@ services:
         window: 60s
       resources:
         limits:
-          cpus: '0.7'
+          cpus: '0.8'
           memory: '1.5GB'
     networks:
       - app-network
