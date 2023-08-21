@@ -13,16 +13,18 @@ import java.util.Date
 import java.util.UUID
 
 @Entity
-@Table
-class Person(
+@Table(name = "person")
+class PersonEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     var id: UUID = UUID.randomUUID(),
-    @Column(unique = true, length = 32)
+    @Column(name = "nickname", unique = true, length = 32)
     @NotBlank
     var apelido: String = "",
+    @Column(name = "name")
     @NotBlank
     var nome: String = "",
+    @Column(name = "birthday")
     var nascimento: Date = Date(),
     @Convert(converter = ListConverter::class)
     var stack: List<@Size(max = 32) String> = emptyList()
