@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import java.net.URI
 import java.util.UUID
@@ -29,8 +30,12 @@ class PersonController(
     @PostMapping("/pessoas")
     fun postPerson(@RequestBody person: PersonEntity): ResponseEntity<Any> {
         val newPerson = personRepository.save(person)
-
         return ResponseEntity.created(URI.create("/pessoas" + newPerson.id)).build()
+    }
+
+    @GetMapping("/pessoas")
+    fun searchPerson(@RequestParam("t") t: String): ResponseEntity<List<PersonEntity>> {
+        return ResponseEntity.ok(personRepository.filterBySearch(t.lowercase()))
     }
 
     @GetMapping("/contagem-pessoas")
