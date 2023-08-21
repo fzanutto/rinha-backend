@@ -3,7 +3,7 @@ name: rinha-backend
 
 services:
   api1:
-    image: fzanutto/rinha-backend:latest
+    image: . #fzanutto/rinha-backend:latest
     hostname: api1
     environment:
       - SERVER_PORT=8000
@@ -23,7 +23,7 @@ services:
       - app-network
 
   api2:
-    image: fzanutto/rinha-backend:latest
+    image: . #fzanutto/rinha-backend:latest
     hostname: api2
     environment:
       - SERVER_PORT=8000
