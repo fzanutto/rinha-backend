@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS person(
     nickname    VARCHAR(50) NOT NULL UNIQUE,
     name        VARCHAR(150) NOT NULL,
     birthday    DATE         NOT NULL,
-    stack       TEXT NOT NULL
+    stack       TEXT
 );
 
 CREATE INDEX idx_person_name ON person (birthday);

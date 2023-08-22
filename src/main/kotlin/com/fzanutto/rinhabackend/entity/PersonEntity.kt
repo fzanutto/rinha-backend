@@ -29,5 +29,5 @@ class PersonEntity(
     @NotNull()
     var nascimento: Date? = Date(),
     @Convert(converter = ListConverter::class)
-    var stack: List<@NotBlank @Size(max = 32) String> = emptyList()
+    var stack: List<@NotBlank @Size(max = 32) String>? = null
 )
