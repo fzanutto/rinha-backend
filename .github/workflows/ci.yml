@@ -18,7 +18,7 @@ jobs:
         run: docker build . -t fzanutto/rinha-backend-ci
 
       - run: |
-          docker-compose up 
+          docker-compose up -d
 
       - name: Load test
         run: |
