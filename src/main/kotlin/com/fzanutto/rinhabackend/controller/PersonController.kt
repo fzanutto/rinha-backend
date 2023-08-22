@@ -2,6 +2,7 @@ package com.fzanutto.rinhabackend.controller
 
 import com.fzanutto.rinhabackend.entity.PersonEntity
 import com.fzanutto.rinhabackend.repository.PersonRepository
+import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -28,7 +29,7 @@ class PersonController(
     }
 
     @PostMapping("/pessoas")
-    fun postPerson(@RequestBody person: PersonEntity): ResponseEntity<Any> {
+    fun postPerson(@Valid @RequestBody person: PersonEntity): ResponseEntity<Any> {
         val newPerson = personRepository.save(person)
         return ResponseEntity.created(URI.create("/pessoas/" + newPerson.id)).build()
     }
