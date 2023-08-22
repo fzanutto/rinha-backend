@@ -12,13 +12,11 @@ services:
       - postgres
     expose:
       - "8000"
-    deploy:
-      resources:
-        limits:
-          cpus: '0.3'
-          memory: '0.6GB'
-    networks:
-      - app-network
+#    deploy:
+#      resources:
+#        limits:
+#          cpus: '0.3'
+#          memory: '0.6GB'
 
   api2:
     image: fzanutto/rinha-backend
@@ -32,13 +30,11 @@ services:
       - postgres
     expose:
       - "8000"
-    deploy:
-      resources:
-        limits:
-          cpus: '0.3'
-          memory: '0.6GB'
-    networks:
-      - app-network
+#    deploy:
+#      resources:
+#        limits:
+#          cpus: '0.3'
+#          memory: '0.6GB'
 
   nginx:
     image: nginx:latest
@@ -49,13 +45,11 @@ services:
       - api2
     ports:
       - "9999:9999"
-    deploy:
-      resources:
-        limits:
-          cpus: '0.1'
-          memory: '0.3GB'
-    networks:
-      - app-network
+#    deploy:
+#      resources:
+#        limits:
+#          cpus: '0.1'
+#          memory: '0.3GB'
 
   postgres:
     image: postgres:latest
@@ -78,12 +72,7 @@ services:
         delay: 5s
         max_attempts: 3
         window: 60s
-      resources:
-        limits:
-          cpus: '0.8'
-          memory: '1.5GB'
-    networks:
-      - app-network
-
-networks:
-  app-network:
+#      resources:
+#        limits:
+#          cpus: '0.8'
+#          memory: '1.5GB'
