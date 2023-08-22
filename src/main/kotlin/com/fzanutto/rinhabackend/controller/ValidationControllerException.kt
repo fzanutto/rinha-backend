@@ -1,5 +1,6 @@
 package com.fzanutto.rinhabackend.controller
 
+import org.postgresql.util.PSQLException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.validation.BindException
@@ -19,5 +20,11 @@ class ValidationControllerException {
         }
 
         return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(errorMessages)
+    }
+
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    @ExceptionHandler(PSQLException::class)
+    fun handlePSQLError(ex: PSQLException): ResponseEntity<String> {
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(ex.message ?: "")
     }
 }
