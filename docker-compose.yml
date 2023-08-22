@@ -8,14 +8,16 @@ services:
       - DATABASE_URL=jdbc:postgresql://postgres:5432/rinha?currentSchema=public
       - DATABASE_USERNAME=postgres
       - DATABASE_PASSWORD=root
+      - REDIS_HOST=localhost
     depends_on:
       - postgres
+      - redis
     expose:
       - "8000"
     deploy:
       resources:
         limits:
-          cpus: '0.3'
+          cpus: '0.4'
           memory: '0.6GB'
 
   api2:
@@ -26,14 +28,16 @@ services:
       - DATABASE_URL=jdbc:postgresql://postgres:5432/rinha?currentSchema=public
       - DATABASE_USERNAME=postgres
       - DATABASE_PASSWORD=root
+      - REDIS_HOST=localhost
     depends_on:
       - postgres
+      - redis
     expose:
       - "8000"
     deploy:
       resources:
         limits:
-          cpus: '0.3'
+          cpus: '0.4'
           memory: '0.6GB'
 
   nginx:
@@ -48,8 +52,8 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '0.1'
-          memory: '0.3GB'
+          cpus: '0.2'
+          memory: '0.4GB'
 
   postgres:
     image: postgres:latest
@@ -74,5 +78,16 @@ services:
         window: 60s
       resources:
         limits:
-          cpus: '0.8'
-          memory: '1.5GB'
+          cpus: '0.3'
+          memory: '0.6GB'
+
+  redis:
+    image: redis:latest
+    restart: always
+    ports:
+      - "6379:6379"
+    deploy:
+      resources:
+        limits:
+          cpus: '0.2'
+          memory: '0.6GB'
