@@ -7,20 +7,15 @@ on:
     branches: [ main ]
 
 jobs:
-  build:
-    runs-on: ubuntu-20.04
-    steps:
-      - uses: actions/checkout@master
-
-      - name: Build
-        run: docker build . -t fzanutto/rinha-backend-ci
   test:
     runs-on: ubuntu-20.04
-    needs: build
     permissions:
       contents: write
     steps:
       - uses: actions/checkout@v3
+      - name: Build
+        run: docker build . -t fzanutto/rinha-backend-ci
       - run: |
-          docker-compose up
+          docker-compose up 
+
 
