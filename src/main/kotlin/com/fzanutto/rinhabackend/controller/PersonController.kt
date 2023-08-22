@@ -30,7 +30,7 @@ class PersonController(
     @PostMapping("/pessoas")
     fun postPerson(@RequestBody person: PersonEntity): ResponseEntity<Any> {
         val newPerson = personRepository.save(person)
-        return ResponseEntity.created(URI.create("/pessoas" + newPerson.id)).build()
+        return ResponseEntity.created(URI.create("/pessoas/" + newPerson.id)).build()
     }
 
     @GetMapping("/pessoas")
