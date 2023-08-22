@@ -1,7 +1,7 @@
 version: '3.8'
 services:
   api1:
-    image: fzanutto/rinha-backend-ci
+    image: fzanutto/rinha-backend
     hostname: api1
     environment:
       - SERVER_PORT=8000
@@ -12,14 +12,14 @@ services:
       - postgres
     expose:
       - "8000"
-#    deploy:
-#      resources:
-#        limits:
-#          cpus: '0.3'
-#          memory: '0.6GB'
+    deploy:
+      resources:
+        limits:
+          cpus: '0.3'
+          memory: '0.6GB'
 
   api2:
-    image: fzanutto/rinha-backend-ci
+    image: fzanutto/rinha-backend
     hostname: api2
     environment:
       - SERVER_PORT=8000
@@ -30,11 +30,11 @@ services:
       - postgres
     expose:
       - "8000"
-#    deploy:
-#      resources:
-#        limits:
-#          cpus: '0.3'
-#          memory: '0.6GB'
+    deploy:
+      resources:
+        limits:
+          cpus: '0.3'
+          memory: '0.6GB'
 
   nginx:
     image: nginx:latest
@@ -45,11 +45,11 @@ services:
       - api2
     ports:
       - "9999:9999"
-#    deploy:
-#      resources:
-#        limits:
-#          cpus: '0.1'
-#          memory: '0.3GB'
+    deploy:
+      resources:
+        limits:
+          cpus: '0.1'
+          memory: '0.3GB'
 
   postgres:
     image: postgres:latest
@@ -72,7 +72,7 @@ services:
         delay: 5s
         max_attempts: 3
         window: 60s
-#      resources:
-#        limits:
-#          cpus: '0.8'
-#          memory: '1.5GB'
+      resources:
+        limits:
+          cpus: '0.8'
+          memory: '1.5GB'
