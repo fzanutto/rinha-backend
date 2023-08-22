@@ -3,7 +3,6 @@ package com.fzanutto.rinhabackend.controller
 import com.fzanutto.rinhabackend.entity.PersonEntity
 import com.fzanutto.rinhabackend.repository.PersonRepository
 import jakarta.validation.Valid
-import org.springframework.cache.CacheManager
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -18,8 +17,7 @@ import java.util.UUID
 @RestController
 @RequestMapping(produces = ["application/json"])
 class PersonController(
-    private val personRepository: PersonRepository,
-    private val cacheManager: CacheManager
+    private val personRepository: PersonRepository
 ) {
 
     @GetMapping("/pessoas/{id}")

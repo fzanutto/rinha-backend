@@ -11,14 +11,13 @@ services:
       - REDIS_HOST=localhost
     depends_on:
       - postgres
-      - redis
     expose:
       - "8000"
-    deploy:
-      resources:
-        limits:
-          cpus: '0.4'
-          memory: '0.6GB'
+#    deploy:
+#      resources:
+#        limits:
+#          cpus: '0.4'
+#          memory: '0.6GB'
 
   api2:
     image: fzanutto/rinha-backend
@@ -31,7 +30,6 @@ services:
       - REDIS_HOST=localhost
     depends_on:
       - postgres
-      - redis
     expose:
       - "8000"
 #    deploy:
@@ -81,13 +79,3 @@ services:
 #          cpus: '0.3'
 #          memory: '0.6GB'
 
-  redis:
-    image: redis:latest
-    restart: always
-    ports:
-      - "6379:6379"
-#    deploy:
-#      resources:
-#        limits:
-#          cpus: '0.2'
-#          memory: '0.6GB'
