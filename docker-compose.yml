@@ -34,11 +34,11 @@ services:
       - redis
     expose:
       - "8000"
-    deploy:
-      resources:
-        limits:
-          cpus: '0.4'
-          memory: '0.6GB'
+#    deploy:
+#      resources:
+#        limits:
+#          cpus: '0.4'
+#          memory: '0.6GB'
 
   nginx:
     image: nginx:latest
@@ -49,11 +49,11 @@ services:
       - api2
     ports:
       - "9999:9999"
-    deploy:
-      resources:
-        limits:
-          cpus: '0.2'
-          memory: '0.4GB'
+#    deploy:
+#      resources:
+#        limits:
+#          cpus: '0.2'
+#          memory: '0.4GB'
 
   postgres:
     image: postgres:latest
@@ -76,18 +76,18 @@ services:
         delay: 5s
         max_attempts: 3
         window: 60s
-      resources:
-        limits:
-          cpus: '0.3'
-          memory: '0.6GB'
+#      resources:
+#        limits:
+#          cpus: '0.3'
+#          memory: '0.6GB'
 
   redis:
     image: redis:latest
     restart: always
     ports:
       - "6379:6379"
-    deploy:
-      resources:
-        limits:
-          cpus: '0.2'
-          memory: '0.6GB'
+#    deploy:
+#      resources:
+#        limits:
+#          cpus: '0.2'
+#          memory: '0.6GB'

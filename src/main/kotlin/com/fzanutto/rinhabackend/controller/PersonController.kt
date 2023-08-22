@@ -24,10 +24,9 @@ class PersonController(
 
     @GetMapping("/pessoas/{id}")
     fun getPerson(@PathVariable id: UUID): ResponseEntity<PersonEntity> {
-        cacheManager.getCache("person")?.get(id, PersonEntity::class.java)?.let {
-            return ResponseEntity.ok(it)
-        }
-
+//        cacheManager.getCache("person")?.get(id, PersonEntity::class.java)?.let {
+//            return ResponseEntity.ok(it)
+//        }
         return personRepository.findById(id)
             .map {
                 ResponseEntity.ok(it)
@@ -39,7 +38,7 @@ class PersonController(
     fun postPerson(@Valid @RequestBody person: PersonEntity): ResponseEntity<Any> {
         val newPerson = personRepository.save(person)
 
-        cacheManager.getCache("person")?.put(newPerson.id, newPerson)
+//        cacheManager.getCache("person")?.put(newPerson.id, newPerson)
 
         return ResponseEntity.created(URI.create("/pessoas/" + newPerson.id)).build()
     }
