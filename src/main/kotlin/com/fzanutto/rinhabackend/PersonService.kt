@@ -15,5 +15,4 @@ class PersonService(
     fun getPersonById(uuid: UUID): PersonEntity? {
         return personRepository.findById(uuid).getOrNull()
     }
-
 }
