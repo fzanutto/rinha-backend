@@ -1,5 +1,6 @@
 package com.fzanutto.rinhabackend.controller
 
+import com.fzanutto.rinhabackend.PersonService
 import com.fzanutto.rinhabackend.entity.PersonEntity
 import com.fzanutto.rinhabackend.repository.PersonRepository
 import jakarta.validation.Valid
@@ -17,19 +18,17 @@ import java.util.UUID
 @RestController
 @RequestMapping(produces = ["application/json"])
 class PersonController(
-    private val personRepository: PersonRepository
+    private val personRepository: PersonRepository,
+    private val personService: PersonService
 ) {
 
     @GetMapping("/pessoas/{id}")
     fun getPerson(@PathVariable id: UUID): ResponseEntity<PersonEntity> {
-//        cacheManager.getCache("person")?.get(id, PersonEntity::class.java)?.let {
-//            return ResponseEntity.ok(it)
-//        }
-        return personRepository.findById(id)
-            .map {
-                ResponseEntity.ok(it)
-            }
-            .orElse(ResponseEntity.notFound().build())
+        return personService.getPersonById(id)?.let {
+            ResponseEntity.ok(it)
+        } ?: run {
+            ResponseEntity.notFound().build()
+        }
     }
 
     @PostMapping("/pessoas")

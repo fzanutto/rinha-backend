@@ -8,16 +8,17 @@ services:
       - DATABASE_URL=jdbc:postgresql://postgres:5432/rinha?currentSchema=public
       - DATABASE_USERNAME=postgres
       - DATABASE_PASSWORD=root
-      - REDIS_HOST=localhost
+      - REDIS_HOST=redis
     depends_on:
       - postgres
+      - redis
     expose:
       - "8000"
-#    deploy:
-#      resources:
-#        limits:
-#          cpus: '0.4'
-#          memory: '0.6GB'
+    deploy:
+      resources:
+        limits:
+          cpus: '0.3'
+          memory: '0.7GB'
 
   api2:
     image: fzanutto/rinha-backend
@@ -27,16 +28,17 @@ services:
       - DATABASE_URL=jdbc:postgresql://postgres:5432/rinha?currentSchema=public
       - DATABASE_USERNAME=postgres
       - DATABASE_PASSWORD=root
-      - REDIS_HOST=localhost
+      - REDIS_HOST=redis
     depends_on:
       - postgres
+      - redis
     expose:
       - "8000"
-#    deploy:
-#      resources:
-#        limits:
-#          cpus: '0.4'
-#          memory: '0.6GB'
+    deploy:
+      resources:
+        limits:
+          cpus: '0.3'
+          memory: '0.7GB'
 
   nginx:
     image: nginx:latest
@@ -47,11 +49,11 @@ services:
       - api2
     ports:
       - "9999:9999"
-#    deploy:
-#      resources:
-#        limits:
-#          cpus: '0.2'
-#          memory: '0.4GB'
+    deploy:
+      resources:
+        limits:
+          cpus: '0.1'
+          memory: '0.2GB'
 
   postgres:
     image: postgres:latest
@@ -74,8 +76,23 @@ services:
         delay: 5s
         max_attempts: 3
         window: 60s
-#      resources:
-#        limits:
-#          cpus: '0.3'
-#          memory: '0.6GB'
+      resources:
+        limits:
+          cpus: '0.7'
+          memory: '0.9GB'
+
+  redis:
+    image: redis
+    hostname: redis
+    ports:
+      - '6379:6379'
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+      - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL
+    deploy:
+      resources:
+        limits:
+          cpus: '0.1'
+          memory: '0.5GB'
+
 
