@@ -1,3 +1,5 @@
+CREATE EXTENSION IF NOT EXISTS "pg_trgm";
+
 CREATE TABLE IF NOT EXISTS person(
     id          UUID PRIMARY KEY,
     nickname    VARCHAR(50) NOT NULL UNIQUE,
@@ -6,5 +8,5 @@ CREATE TABLE IF NOT EXISTS person(
     stack       TEXT
 );
 
-CREATE INDEX idx_person_name ON person (birthday);
-CREATE INDEX idx_person_stacks ON person (stack);
+CREATE INDEX idx_person_name ON person (name);
+CREATE INDEX idx_person_stack ON person USING gist (search gist_trgm_ops(siglen = 64));
