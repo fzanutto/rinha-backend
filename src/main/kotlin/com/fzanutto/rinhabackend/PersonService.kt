@@ -11,7 +11,6 @@ import kotlin.jvm.optionals.getOrNull
 class PersonService(
     private val personRepository: PersonRepository
 ) {
-    @Cacheable("person")
     fun getPersonById(uuid: UUID): PersonEntity? {
         return personRepository.findById(uuid).getOrNull()
     }
