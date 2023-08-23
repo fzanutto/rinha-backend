@@ -10,6 +10,8 @@ jobs:
     permissions:
       contents: write
     steps:
+      - uses: actions/checkout@v3
+
       - run: |
           docker build . -t fzanutto/rinha-backend
           docker-compose up -d
