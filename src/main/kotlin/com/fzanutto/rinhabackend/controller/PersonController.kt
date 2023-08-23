@@ -42,7 +42,7 @@ class PersonController(
 
     @GetMapping("/pessoas")
     fun searchPerson(@RequestParam("t") t: String): ResponseEntity<List<PersonEntity>> {
-        return ResponseEntity.ok(personRepository.filterBySearch(t.lowercase()))
+        return ResponseEntity.ok(personRepository.filterBySearch(t))
     }
 
     @GetMapping("/contagem-pessoas")
