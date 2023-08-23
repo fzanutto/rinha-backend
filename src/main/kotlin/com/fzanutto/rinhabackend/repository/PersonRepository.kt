@@ -11,9 +11,7 @@ interface PersonRepository: CrudRepository<PersonEntity, UUID> {
     @Query(
         nativeQuery = true,
         value = "SELECT p.* FROM person p " +
-            "WHERE p.nickname ILIKE '%' || :searchTerm || '%' " +
-            "OR p.name ILIKE '%' || :searchTerm || '%' " +
-            "OR p.stack ILIKE '%' || :searchTerm || '%' " +
+            "WHERE p.search ILIKE '%' || :searchTerm || '%' " +
             "LIMIT 50;"
     )
     fun filterBySearch(searchTerm: String): List<PersonEntity>

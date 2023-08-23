@@ -1,6 +1,7 @@
 package com.fzanutto.rinhabackend.entity
 
 import com.fasterxml.jackson.annotation.JsonFormat
+import com.fasterxml.jackson.annotation.JsonIgnore
 import jakarta.persistence.Column
 import jakarta.persistence.Convert
 import jakarta.persistence.Entity
@@ -36,5 +37,8 @@ class PersonEntity(
     var nascimento: LocalDate? = null,
 
     @Convert(converter = ListConverter::class)
-    var stack: List<@NotBlank @Size(max = 32) String>? = null
+    var stack: List<@NotBlank @Size(max = 32) String>? = null,
+
+    @JsonIgnore
+    var search: String = "$apelido $nome ${stack?.joinToString("; ")}"
 ) : Serializable
