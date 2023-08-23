@@ -17,7 +17,7 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "0.2"
+          cpus: "0.35"
           memory: "0.7GB"
 
   api2:
@@ -37,7 +37,7 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "0.2"
+          cpus: "0.35"
           memory: "0.7GB"
 
   nginx:
@@ -52,7 +52,7 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "0.15"
+          cpus: "0.1"
           memory: "0.2GB"
 
   postgres:
@@ -78,7 +78,7 @@ services:
         window: 60s
       resources:
         limits:
-          cpus: "0.75"
+          cpus: "0.6"
           memory: "1.2GB"
 
   redis:
@@ -92,5 +92,5 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "0.2"
+          cpus: "0.1"
           memory: "0.2GB"
