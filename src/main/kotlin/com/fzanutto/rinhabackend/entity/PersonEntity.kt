@@ -3,8 +3,6 @@ package com.fzanutto.rinhabackend.entity
 import com.fasterxml.jackson.annotation.JsonFormat
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
-import jakarta.validation.constraints.NotBlank
-import jakarta.validation.constraints.NotNull
 import org.springframework.data.annotation.Id
 import org.springframework.data.domain.Persistable
 import org.springframework.data.relational.core.mapping.Column
@@ -21,17 +19,14 @@ data class PersonEntity(
     var uuid: UUID = UUID.randomUUID(),
 
     @Column(value = "nickname")
-    @NotBlank
     var apelido: String = "",
 
     @Column("name")
-    @NotBlank
     var nome: String = "",
 
     @Column("birthday")
-    @NotNull
     @JsonFormat(pattern="yyyy-MM-dd")
-    var nascimento: LocalDate? = null,
+    var nascimento: LocalDate = LocalDate.now(),
 
     @Column("stack")
     var stack: List<String>? = null,
