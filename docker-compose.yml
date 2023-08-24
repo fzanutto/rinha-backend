@@ -17,7 +17,7 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "0.3"
+          cpus: "0.4"
           memory: "0.7GB"
 
   api2:
@@ -37,7 +37,7 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "0.3"
+          cpus: "0.4"
           memory: "0.7GB"
 
   nginx:
@@ -80,7 +80,7 @@ services:
         window: 60s
       resources:
         limits:
-          cpus: "0.7"
+          cpus: "0.5"
           memory: "0.9GB"
 
   redis:

@@ -29,11 +29,11 @@ class ValidationControllerException {
         return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(ex.message ?: "")
     }
 
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(Exception::class)
     fun handleOtherError(ex: Exception): ResponseEntity<String> {
         return ResponseEntity
-            .status(HttpStatus.INTERNAL_SERVER_ERROR)
+            .status(HttpStatus.BAD_REQUEST)
             .body(ex.stackTraceToString())
     }
 
