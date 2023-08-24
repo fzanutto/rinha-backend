@@ -5,7 +5,7 @@ services:
     hostname: api1
     environment:
       - SERVER_PORT=8000
-      - DATABASE_URL=jdbc:postgresql://postgres:5432/rinha?currentSchema=public
+      - DATABASE_URL=r2dbc:postgresql://postgres:5432/rinha?currentSchema=public
       - DATABASE_USERNAME=postgres
       - DATABASE_PASSWORD=root
       - REDIS_HOST=redis
@@ -25,7 +25,7 @@ services:
     hostname: api2
     environment:
       - SERVER_PORT=8000
-      - DATABASE_URL=jdbc:postgresql://postgres:5432/rinha?currentSchema=public
+      - DATABASE_URL=r2dbc:postgresql://postgres:5432/rinha?currentSchema=public
       - DATABASE_USERNAME=postgres
       - DATABASE_PASSWORD=root
       - REDIS_HOST=redis

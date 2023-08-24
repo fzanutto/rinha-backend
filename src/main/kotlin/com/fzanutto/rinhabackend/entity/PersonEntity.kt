@@ -2,43 +2,47 @@ package com.fzanutto.rinhabackend.entity
 
 import com.fasterxml.jackson.annotation.JsonFormat
 import com.fasterxml.jackson.annotation.JsonIgnore
-import jakarta.persistence.Column
-import jakarta.persistence.Convert
-import jakarta.persistence.Entity
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
-import jakarta.persistence.Id
-import jakarta.persistence.Table
+import com.fasterxml.jackson.annotation.JsonProperty
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
-import jakarta.validation.constraints.Size
+import org.springframework.data.annotation.Id
+import org.springframework.data.domain.Persistable
+import org.springframework.data.relational.core.mapping.Column
+import org.springframework.data.relational.core.mapping.Table
 import java.io.Serializable
 import java.time.LocalDate
 import java.util.UUID
 
-@Entity
 @Table(name = "person")
-class PersonEntity(
+data class PersonEntity(
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    var id: UUID = UUID.randomUUID(),
+    @Column("id")
+    @JsonProperty("id")
+    var uuid: UUID = UUID.randomUUID(),
 
-    @Column(name = "nickname", unique = true, length = 32)
+    @Column(value = "nickname")
     @NotBlank
     var apelido: String = "",
 
-    @Column(name = "name")
+    @Column("name")
     @NotBlank
     var nome: String = "",
 
-    @Column(name = "birthday")
+    @Column("birthday")
     @NotNull
     @JsonFormat(pattern="yyyy-MM-dd")
     var nascimento: LocalDate? = null,
 
-    @Convert(converter = ListConverter::class)
-    var stack: List<@NotBlank @Size(max = 32) String>? = null,
+    @Column("stack")
+    var stack: List<String>? = null,
 
     @JsonIgnore
+    @Column("search")
     var search: String = "$apelido $nome ${stack?.joinToString("; ")}"
-) : Serializable
+) : Serializable, Persistable<UUID> {
+    @JsonIgnore
+    override fun getId() = uuid
+
+    @JsonIgnore
+    override fun isNew() = true
+}

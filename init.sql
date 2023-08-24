@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS person(
     nickname    VARCHAR(32) NOT NULL UNIQUE,
     name        VARCHAR(100) NOT NULL,
     birthday    DATE         NOT NULL,
-    stack       TEXT,
+    stack       TEXT[],
     search      TEXT
 );
 

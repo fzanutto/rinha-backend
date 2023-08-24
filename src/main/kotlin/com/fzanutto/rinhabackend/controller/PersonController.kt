@@ -1,6 +1,5 @@
 package com.fzanutto.rinhabackend.controller
 
-import com.fzanutto.rinhabackend.PersonService
 import com.fzanutto.rinhabackend.entity.PersonEntity
 import com.fzanutto.rinhabackend.repository.PersonRepository
 import jakarta.validation.Valid
@@ -18,35 +17,33 @@ import java.util.UUID
 @RestController
 @RequestMapping(produces = ["application/json"])
 class PersonController(
-    private val personRepository: PersonRepository,
-    private val personService: PersonService
+    private val personRepository: PersonRepository
 ) {
-
     @GetMapping("/pessoas/{id}")
-    fun getPerson(@PathVariable id: UUID): ResponseEntity<PersonEntity> {
-        return personService.getPersonById(id)?.let {
+    suspend fun getPerson(@PathVariable id: UUID): ResponseEntity<PersonEntity> {
+        println(id)
+        return personRepository.findById(id)?.let {
             ResponseEntity.ok(it)
-        } ?: run {
-            ResponseEntity.notFound().build()
-        }
+        } ?: ResponseEntity.notFound().build()
     }
 
     @PostMapping("/pessoas")
-    fun postPerson(@Valid @RequestBody person: PersonEntity): ResponseEntity<Any> {
-        val newPerson = personRepository.save(person)
-
-//        cacheManager.getCache("person")?.put(newPerson.id, newPerson)
-
-        return ResponseEntity.created(URI.create("/pessoas/" + newPerson.id)).build()
+    suspend fun postPerson(@Valid @RequestBody person: PersonEntity): ResponseEntity<Any> {
+        personRepository.save(person)
+        return ResponseEntity.created(URI.create("/pessoas/${person.uuid}")).build()
     }
 
     @GetMapping("/pessoas")
-    fun searchPerson(@RequestParam("t") t: String): ResponseEntity<List<PersonEntity>> {
-        return ResponseEntity.ok(personRepository.filterBySearch(t))
+    suspend fun searchPerson(@RequestParam("t") searchTerm: String): ResponseEntity<List<PersonEntity>> {
+        return personRepository.filterBySearch(searchTerm).let {
+            ResponseEntity.ok(it)
+        }
     }
 
     @GetMapping("/contagem-pessoas")
-    fun getPersonCount(): ResponseEntity<Long> {
-        return ResponseEntity.ok(personRepository.count())
+    suspend fun getPersonCount(): ResponseEntity<Long> {
+        return personRepository.count().let {
+            ResponseEntity.ok(it)
+        }
     }
 }
