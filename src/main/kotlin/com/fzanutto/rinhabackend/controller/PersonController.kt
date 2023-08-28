@@ -25,9 +25,9 @@ class PersonController(
 ) {
     @GetMapping("/pessoas/{id}")
     suspend fun getPerson(@PathVariable id: UUID): ResponseEntity<PersonEntity> {
-//        cache.opsForValue().get(id.toString())?.let {
-//            return ResponseEntity.ok(it)
-//        }
+        cache.opsForValue().get(id.toString())?.let {
+            return ResponseEntity.ok(it)
+        }
 
         return personRepository.findById(id)?.let {
             ResponseEntity.ok(it)
@@ -36,16 +36,16 @@ class PersonController(
 
     @PostMapping("/pessoas")
     suspend fun postPerson(@Valid @RequestBody person: PersonEntity): ResponseEntity<Any> {
-//        if (cache.opsForValue().get(person.apelido) != null) {
-//            return ResponseEntity.unprocessableEntity().body("Nickname duplicado")
-//        }
-//
-//        if (person.apelido.isBlank() || person.nome.isBlank()) {
-//            return ResponseEntity.unprocessableEntity().body("Apelido vazio")
-//        }
+        if (cache.opsForValue().get(person.apelido) != null) {
+            return ResponseEntity.unprocessableEntity().body("Nickname duplicado")
+        }
 
-//        cache.opsForValue().set(person.apelido, person)
-//        cache.opsForValue().set(person.id.toString(), person)
+        if (person.apelido.isBlank() || person.nome.isBlank()) {
+            return ResponseEntity.unprocessableEntity().body("Apelido vazio")
+        }
+
+        cache.opsForValue().set(person.apelido, person)
+        cache.opsForValue().set(person.id.toString(), person)
 
         personRepository.insertPerson(person)
 
