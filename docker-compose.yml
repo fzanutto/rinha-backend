@@ -18,7 +18,7 @@ services:
       resources:
         limits:
           cpus: "0.4"
-          memory: "0.7GB"
+          memory: "0.6GB"
 
   api2:
     image: fzanutto/rinha-backend
@@ -38,7 +38,7 @@ services:
       resources:
         limits:
           cpus: "0.4"
-          memory: "0.7GB"
+          memory: "0.6GB"
 
   nginx:
     image: nginx:latest
@@ -96,4 +96,4 @@ services:
       resources:
         limits:
           cpus: "0.05"
-          memory: "0.1GB"
+          memory: "0.3GB"
