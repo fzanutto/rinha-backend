@@ -5,8 +5,9 @@ CREATE TABLE IF NOT EXISTS person(
     nickname    VARCHAR(32) NOT NULL UNIQUE,
     name        VARCHAR(100) NOT NULL,
     birthday    DATE         NOT NULL,
-    stack       TEXT[],
-    search      TEXT
+    stack       TEXT
 );
 
-CREATE INDEX IF NOT EXISTS idx_person_search ON person USING gist (search gist_trgm_ops(siglen = 64));
+CREATE INDEX IF NOT EXISTS idx_person_nickname ON person USING gist (nickname gist_trgm_ops(siglen = 64));
+CREATE INDEX IF NOT EXISTS idx_person_name ON person USING gist (name gist_trgm_ops(siglen = 64));
+CREATE INDEX IF NOT EXISTS idx_person_stack ON person USING gist (stack gist_trgm_ops(siglen = 64));

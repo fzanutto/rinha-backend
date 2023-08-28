@@ -1,8 +1,5 @@
-package com.fzanutto.rinhabackend.entity
+package com.fzanutto.rinhabackend.model
 
-import com.fasterxml.jackson.annotation.JsonFormat
-import com.fasterxml.jackson.annotation.JsonIgnore
-import com.fasterxml.jackson.annotation.JsonProperty
 import org.springframework.data.annotation.Id
 import org.springframework.data.relational.core.mapping.Column
 import org.springframework.data.relational.core.mapping.Table
@@ -22,13 +19,16 @@ data class PersonEntity(
     var nome: String = "",
 
     @Column("birthday")
-    @JsonFormat(pattern="yyyy-MM-dd")
     var nascimento: LocalDate = LocalDate.now(),
 
     @Column("stack")
-    var stack: Array<String>? = null,
-
-    @JsonIgnore
-    @Column("search")
-    var search: String = "$apelido $nome ${stack?.joinToString("; ")}"
-) : Serializable
+    var stack: String? = null
+) : Serializable {
+    fun mapToDTO() = PersonDTO(
+        id = id,
+        apelido = apelido,
+        nome = nome,
+        nascimento = nascimento,
+        stack = stack?.split("; ")
+    )
+}
