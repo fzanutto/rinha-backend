@@ -47,8 +47,16 @@ class PersonController(
         cache.opsForValue().set(person.apelido, person)
         cache.opsForValue().set(person.id.toString(), person)
 
-        personRepository.save(person)
-        return ResponseEntity.created(URI.create("/pessoas/${person.uuid}")).build()
+        personRepository.insertPerson(
+            uuid = person.id,
+            name = person.nome,
+            nickname = person.apelido,
+            birthday = person.nascimento,
+            stack = person.stack,
+            search = person.search
+        )
+
+        return ResponseEntity.created(URI.create("/pessoas/${person.id}")).build()
     }
 
     @GetMapping("/pessoas")
