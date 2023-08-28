@@ -18,7 +18,7 @@ services:
       resources:
         limits:
           cpus: "0.4"
-          memory: "0.6GB"
+          memory: "0.75GB"
 
   api2:
     image: fzanutto/rinha-backend
@@ -38,7 +38,7 @@ services:
       resources:
         limits:
           cpus: "0.4"
-          memory: "0.6GB"
+          memory: "0.75GB"
 
   nginx:
     image: nginx:latest
@@ -57,7 +57,7 @@ services:
 
   postgres:
     image: postgres:latest
-    command: postgres -c 'max_connections=100'
+    command: postgres -c 'max_connections=400'
     user: postgres
     volumes:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
@@ -78,10 +78,10 @@ services:
         delay: 5s
         max_attempts: 3
         window: 60s
-#      resources:
-#        limits:
-#          cpus: "0.5"
-#          memory: "1.3GB"
+      resources:
+        limits:
+          cpus: "0.55"
+          memory: "1.3GB"
 
   redis:
     image: redis
