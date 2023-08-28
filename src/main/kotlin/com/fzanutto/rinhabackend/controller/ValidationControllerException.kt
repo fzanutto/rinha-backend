@@ -36,12 +36,4 @@ class ValidationControllerException {
             .status(HttpStatus.BAD_REQUEST)
             .body(ex.stackTraceToString())
     }
-
-    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
-    @ExceptionHandler(DuplicateKeyException::class)
-    fun handleOtherError(ex: DuplicateKeyException): ResponseEntity<String> {
-        return ResponseEntity
-            .status(HttpStatus.UNPROCESSABLE_ENTITY)
-            .body("Apelido duplicado")
-    }
 }
