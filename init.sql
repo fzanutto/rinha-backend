@@ -9,4 +9,4 @@ CREATE TABLE IF NOT EXISTS person(
     search      TEXT
 );
 
-CREATE INDEX IF NOT EXISTS idx_person_search ON person USING gist (search gist_trgm_ops(siglen = 64));
+CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_person_search ON person USING gist (search gist_trgm_ops(siglen = 64));
