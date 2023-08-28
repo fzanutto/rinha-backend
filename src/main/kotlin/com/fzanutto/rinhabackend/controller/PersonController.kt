@@ -1,6 +1,6 @@
 package com.fzanutto.rinhabackend.controller
 
-import com.fzanutto.rinhabackend.model.PersonDTO
+import com.fzanutto.rinhabackend.entity.PersonEntity
 import com.fzanutto.rinhabackend.repository.PersonRepository
 import jakarta.validation.Valid
 import org.springframework.cache.annotation.CacheConfig
@@ -21,21 +21,21 @@ import java.util.UUID
 @CacheConfig(cacheNames = ["person"])
 class PersonController(
     private val personRepository: PersonRepository,
-    private val cache: RedisTemplate<String, PersonDTO>
+    private val cache: RedisTemplate<String, PersonEntity>
 ) {
     @GetMapping("/pessoas/{id}")
-    suspend fun getPerson(@PathVariable id: UUID): ResponseEntity<PersonDTO> {
+    suspend fun getPerson(@PathVariable id: UUID): ResponseEntity<PersonEntity> {
         cache.opsForValue().get(id.toString())?.let {
             return ResponseEntity.ok(it)
         }
 
         return personRepository.findById(id)?.let {
-            ResponseEntity.ok(it.mapToDTO())
+            ResponseEntity.ok(it)
         } ?: ResponseEntity.notFound().build()
     }
 
     @PostMapping("/pessoas")
-    suspend fun postPerson(@Valid @RequestBody person: PersonDTO): ResponseEntity<String> {
+    suspend fun postPerson(@Valid @RequestBody person: PersonEntity): ResponseEntity<Any> {
         if (cache.opsForValue().get(person.apelido) != null) {
             return ResponseEntity.unprocessableEntity().body("Nickname duplicado")
         }
@@ -47,23 +47,22 @@ class PersonController(
         cache.opsForValue().set(person.apelido, person)
         cache.opsForValue().set(person.id.toString(), person)
 
-        val entity = person.mapToEntity()
-
         personRepository.insertPerson(
-            uuid = entity.id,
-            name = entity.nome,
-            nickname = entity.apelido,
-            birthday = entity.nascimento,
-            stack = entity.stack
+            uuid = person.id,
+            name = person.nome,
+            nickname = person.apelido,
+            birthday = person.nascimento,
+            stack = person.stack,
+            search = person.search
         )
 
         return ResponseEntity.created(URI.create("/pessoas/${person.id}")).build()
     }
 
     @GetMapping("/pessoas")
-    suspend fun searchPerson(@RequestParam("t") searchTerm: String): ResponseEntity<List<PersonDTO>> {
+    suspend fun searchPerson(@RequestParam("t") searchTerm: String): ResponseEntity<List<PersonEntity>> {
         return personRepository.filterBySearch(searchTerm).let {
-            ResponseEntity.ok(it.map { it.mapToDTO() })
+            ResponseEntity.ok(it)
         }
     }
 
