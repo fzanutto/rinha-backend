@@ -92,8 +92,8 @@ services:
     environment:
       - ALLOW_EMPTY_PASSWORD=yes
       - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL
-    deploy:
-      resources:
-        limits:
-          cpus: "0.05"
-          memory: "0.3GB"
+#    deploy:
+#      resources:
+#        limits:
+#          cpus: "0.05"
+#          memory: "0.3GB"
