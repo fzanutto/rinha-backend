@@ -78,10 +78,10 @@ services:
         delay: 5s
         max_attempts: 3
         window: 60s
-      resources:
-        limits:
-          cpus: "0.5"
-          memory: "1.3GB"
+#      resources:
+#        limits:
+#          cpus: "0.5"
+#          memory: "1.3GB"
 
   redis:
     image: redis
