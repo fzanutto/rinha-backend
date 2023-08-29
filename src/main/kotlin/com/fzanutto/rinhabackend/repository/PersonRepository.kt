@@ -1,20 +1,27 @@
 package com.fzanutto.rinhabackend.repository
 
 import com.fzanutto.rinhabackend.entity.PersonEntity
-import org.springframework.data.jpa.repository.Query
-import org.springframework.data.repository.CrudRepository
+import org.springframework.data.r2dbc.repository.Query
+import org.springframework.data.repository.kotlin.CoroutineCrudRepository
 import org.springframework.stereotype.Repository
+import reactor.core.publisher.Flux
+import java.time.LocalDate
 import java.util.UUID
 
 @Repository
-interface PersonRepository: CrudRepository<PersonEntity, UUID> {
+interface PersonRepository: CoroutineCrudRepository<PersonEntity, UUID> {
     @Query(
-        nativeQuery = true,
         value = "SELECT p.* FROM person p " +
-            "WHERE LOWER(p.nickname) LIKE CONCAT('%', :searchTerm, '%') " +
-            "OR LOWER(p.name) LIKE CONCAT('%', :searchTerm, '%') " +
-            "OR LOWER(p.stack) LIKE CONCAT('%', :searchTerm, '%') " +
+            "WHERE p.search ILIKE '%' || :searchTerm || '%' " +
             "LIMIT 50;"
     )
-    fun filterBySearch(searchTerm: String): List<PersonEntity>
+    suspend fun filterBySearch(searchTerm: String): List<PersonEntity>
+
+    @Query(
+        "INSERT INTO person " +
+            "(id, nickname, name, birthday, stack) " +
+            "VALUES " +
+            "(:#{[0].id}, :#{[0].apelido}, :#{[0].nome}, :#{[0].nascimento}, :#{[0].stack})"
+    )
+    suspend fun insertPerson(person: PersonEntity)
 }

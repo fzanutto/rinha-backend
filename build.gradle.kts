@@ -5,13 +5,6 @@ plugins {
 	id("io.spring.dependency-management") version "1.1.2"
 	kotlin("jvm") version "1.8.22"
 	kotlin("plugin.spring") version "1.8.22"
-	kotlin("plugin.allopen") version "1.8.0"
-}
-
-allOpen {
-	annotation("jakarta.persistence.Entity")
-	annotation("jakarta.persistence.Embeddable")
-	annotation("jakarta.persistence.MappedSuperclass")
 }
 
 group = "com.fzanutto"
@@ -34,14 +27,17 @@ repositories {
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-validation")
 	implementation("org.springframework.boot:spring-boot-starter-cache")
-	implementation("org.springframework.boot:spring-boot-starter-web")
-	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+	implementation("org.springframework.boot:spring-boot-starter-webflux")
 	implementation("org.springframework.boot:spring-boot-starter-data-redis")
-	implementation("org.postgresql:postgresql")
-	implementation("org.flywaydb:flyway-core")
+	implementation("org.springframework.boot:spring-boot-starter-data-r2dbc")
+	implementation("io.r2dbc:r2dbc-postgresql:0.8.13.RELEASE")
+	runtimeOnly("org.postgresql:postgresql")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
+
+	implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
+	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
 }
 
 tasks.withType<KotlinCompile> {

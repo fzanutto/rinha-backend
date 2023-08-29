@@ -1,9 +1,10 @@
 package com.fzanutto.rinhabackend.controller
 
-import com.fzanutto.rinhabackend.PersonService
 import com.fzanutto.rinhabackend.entity.PersonEntity
 import com.fzanutto.rinhabackend.repository.PersonRepository
 import jakarta.validation.Valid
+import org.springframework.cache.annotation.CacheConfig
+import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -17,36 +18,51 @@ import java.util.UUID
 
 @RestController
 @RequestMapping(produces = ["application/json"])
+@CacheConfig(cacheNames = ["person"])
 class PersonController(
     private val personRepository: PersonRepository,
-    private val personService: PersonService
+    private val cache: RedisTemplate<String, PersonEntity>
 ) {
-
     @GetMapping("/pessoas/{id}")
-    fun getPerson(@PathVariable id: UUID): ResponseEntity<PersonEntity> {
-        return personService.getPersonById(id)?.let {
-            ResponseEntity.ok(it)
-        } ?: run {
-            ResponseEntity.notFound().build()
+    suspend fun getPerson(@PathVariable id: UUID): ResponseEntity<PersonEntity> {
+        cache.opsForValue().get(id.toString())?.let {
+            return ResponseEntity.ok(it)
         }
+
+        return personRepository.findById(id)?.let {
+            ResponseEntity.ok(it)
+        } ?: ResponseEntity.notFound().build()
     }
 
     @PostMapping("/pessoas")
-    fun postPerson(@Valid @RequestBody person: PersonEntity): ResponseEntity<Any> {
-        val newPerson = personRepository.save(person)
+    suspend fun postPerson(@Valid @RequestBody person: PersonEntity): ResponseEntity<Any> {
+        if (cache.opsForValue().get(person.apelido) != null) {
+            return ResponseEntity.unprocessableEntity().body("Nickname duplicado")
+        }
 
-//        cacheManager.getCache("person")?.put(newPerson.id, newPerson)
+        if (person.apelido.isBlank() || person.nome.isBlank()) {
+            return ResponseEntity.unprocessableEntity().body("Apelido vazio")
+        }
 
-        return ResponseEntity.created(URI.create("/pessoas/" + newPerson.id)).build()
+        cache.opsForValue().set(person.apelido, person)
+        cache.opsForValue().set(person.id.toString(), person)
+
+        personRepository.insertPerson(person)
+
+        return ResponseEntity.created(URI.create("/pessoas/${person.id}")).build()
     }
 
     @GetMapping("/pessoas")
-    fun searchPerson(@RequestParam("t") t: String): ResponseEntity<List<PersonEntity>> {
-        return ResponseEntity.ok(personRepository.filterBySearch(t.lowercase()))
+    suspend fun searchPerson(@RequestParam("t") searchTerm: String): ResponseEntity<List<PersonEntity>> {
+        return personRepository.filterBySearch(searchTerm).let {
+            ResponseEntity.ok(it)
+        }
     }
 
     @GetMapping("/contagem-pessoas")
-    fun getPersonCount(): ResponseEntity<Long> {
-        return ResponseEntity.ok(personRepository.count())
+    suspend fun getPersonCount(): ResponseEntity<Long> {
+        return personRepository.count().let {
+            ResponseEntity.ok(it)
+        }
     }
 }

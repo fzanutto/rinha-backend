@@ -1,40 +1,35 @@
 package com.fzanutto.rinhabackend.entity
 
 import com.fasterxml.jackson.annotation.JsonFormat
-import jakarta.persistence.Column
-import jakarta.persistence.Convert
-import jakarta.persistence.Entity
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
-import jakarta.persistence.Id
-import jakarta.persistence.Table
-import jakarta.validation.constraints.NotBlank
-import jakarta.validation.constraints.NotNull
-import jakarta.validation.constraints.Size
+import com.fasterxml.jackson.annotation.JsonIgnore
+import com.fasterxml.jackson.annotation.JsonProperty
+import org.springframework.data.annotation.Id
+import org.springframework.data.relational.core.mapping.Column
+import org.springframework.data.relational.core.mapping.Table
 import java.io.Serializable
 import java.time.LocalDate
 import java.util.UUID
 
-@Entity
 @Table(name = "person")
-class PersonEntity(
+data class PersonEntity(
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     var id: UUID = UUID.randomUUID(),
 
-    @Column(name = "nickname", unique = true, length = 32)
-    @NotBlank
+    @Column(value = "nickname")
     var apelido: String = "",
 
-    @Column(name = "name")
-    @NotBlank
+    @Column("name")
     var nome: String = "",
 
-    @Column(name = "birthday")
-    @NotNull
+    @Column("birthday")
     @JsonFormat(pattern="yyyy-MM-dd")
-    var nascimento: LocalDate? = null,
+    var nascimento: LocalDate = LocalDate.now(),
 
-    @Convert(converter = ListConverter::class)
-    var stack: List<@NotBlank @Size(max = 32) String>? = null
+    @Column("stack")
+    var stack: List<String>? = null,
+
+    @JsonIgnore
+    @Transient
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    var search: String = ""
 ) : Serializable
