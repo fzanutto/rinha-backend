@@ -26,9 +26,10 @@ data class PersonEntity(
     var nascimento: LocalDate = LocalDate.now(),
 
     @Column("stack")
-    var stack: Array<String>? = null,
+    var stack: List<String>? = null,
 
     @JsonIgnore
-    @Column("search")
-    var search: String = "$apelido $nome ${stack?.joinToString("; ")}"
+    @Transient
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    var search: String = ""
 ) : Serializable

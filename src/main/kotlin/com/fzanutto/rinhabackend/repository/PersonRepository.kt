@@ -19,9 +19,9 @@ interface PersonRepository: CoroutineCrudRepository<PersonEntity, UUID> {
 
     @Query(
         "INSERT INTO person " +
-            "(id, nickname, name, birthday, stack, search) " +
+            "(id, nickname, name, birthday, stack) " +
             "VALUES " +
-            "(:#{[0].id}, :#{[0].apelido}, :#{[0].nome}, :#{[0].nascimento}, :#{[0].stack}, :#{[0].search})"
+            "(:#{[0].id}, :#{[0].apelido}, :#{[0].nome}, :#{[0].nascimento}, :#{[0].stack})"
     )
     suspend fun insertPerson(person: PersonEntity)
 }

@@ -5,8 +5,10 @@ CREATE TABLE IF NOT EXISTS person(
     nickname    VARCHAR(32) NOT NULL UNIQUE,
     name        VARCHAR(100) NOT NULL,
     birthday    DATE         NOT NULL,
-    stack       TEXT[],
-    search      TEXT
+    stack       VARCHAR(1024),
+    search      VARCHAR(1156) GENERATED ALWAYS AS (
+        name || ' ' || nickname || ' ' || stack
+    ) STORED
 );
 
 CREATE INDEX IF NOT EXISTS idx_person_search ON person USING gist (search gist_trgm_ops(siglen = 64));
